@@ -1,4 +1,5 @@
 // import { fetchMovies } from "../../services/movieService";
+import SearchBar from "../SearchBar/SearchBar";
 
 export default function App() {
   // const handleSearch = async (title: string) => {
@@ -8,5 +9,9 @@ export default function App() {
   //     console.log(error);
   //   }
   // };
-  return <></>;
+  return (
+    <>
+      <SearchBar />
+    </>
+  );
 }
