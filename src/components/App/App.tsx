@@ -5,14 +5,17 @@ import toast, { Toaster } from "react-hot-toast";
 import type { Movie } from "../../types/movie";
 import MovieGrid from "../MovieGrid/MovieGrid";
 import Loader from "../Loader/Loader";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 export default function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const handleSearch = async (title: string) => {
     try {
       setMovies([]);
+      setIsError(false);
       setIsLoading(true);
       const data = await fetchMovies(title);
 
@@ -23,7 +26,7 @@ export default function App() {
 
       setMovies(data);
     } catch (error) {
-      toast("Something went wrong... Try again later");
+      setIsError(true);
       console.log(error);
     } finally {
       setIsLoading(false);
@@ -52,6 +55,7 @@ export default function App() {
         }}
       />
       {isLoading && <Loader />}
+      {isError && <ErrorMessage />}
       {movies.length > 0 && <MovieGrid onSelect={() => {}} movies={movies} />}
     </>
   );
