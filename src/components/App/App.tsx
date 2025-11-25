@@ -9,9 +9,13 @@ export default function App() {
   //     console.log(error);
   //   }
   // };
+
+  const handleMovie = (title: string) => {
+    console.log("movie:", title);
+  };
   return (
     <>
-      <SearchBar />
+      <SearchBar onSubmit={handleMovie} />
     </>
   );
 }
