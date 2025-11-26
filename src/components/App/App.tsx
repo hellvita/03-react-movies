@@ -48,10 +48,6 @@ export default function App() {
   };
 
   const handleMovie = (title: string) => {
-    if (title === "") {
-      toast("Please enter your search query.");
-      return;
-    }
     handleSearch(title);
   };
 
