@@ -9,22 +9,10 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import MovieModal from "../MovieModal/MovieModal";
 
 export default function App() {
-  const getDefaultMovie = (): Movie => {
-    return {
-      id: -1,
-      poster_path: "",
-      backdrop_path: "",
-      title: "",
-      overview: "",
-      release_date: "",
-      vote_average: 0,
-    };
-  };
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentMovie, setCurrentMovie] = useState<Movie>(getDefaultMovie());
+  const [currentMovie, setCurrentMovie] = useState<Movie | null>(null);
 
   const handleSearch = async (title: string) => {
     try {
@@ -51,19 +39,9 @@ export default function App() {
     handleSearch(title);
   };
 
-  const openModal = (event: React.MouseEvent<HTMLUListElement>) => {
-    const targetElement = event.target as HTMLElement;
-    const card = targetElement.closest("li");
-    if (card !== null) {
-      const movieID = Number(card.id);
-      if (movieID)
-        setCurrentMovie(
-          movies.find((movie) => movie.id === movieID) ?? getDefaultMovie()
-        );
-    }
-    setIsModalOpen(true);
-  };
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = (movie: Movie) => setCurrentMovie(movie);
+
+  const closeModal = () => setCurrentMovie(null);
 
   return (
     <>
@@ -82,7 +60,9 @@ export default function App() {
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
       {movies.length > 0 && <MovieGrid onSelect={openModal} movies={movies} />}
-      {isModalOpen && <MovieModal movie={currentMovie} onClose={closeModal} />}
+      {currentMovie !== null && (
+        <MovieModal movie={currentMovie} onClose={closeModal} />
+      )}
     </>
   );
 }
